@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import morgan from "morgan";
+import { createProduct, getProductDetails, getProducts } from "./controllers";
 
 dotenv.config();
 
@@ -11,6 +12,9 @@ app.use(cors());
 app.use(morgan("dev"));
 
 // main routes
+app.get("/products", getProducts);
+app.get("/products/:id", getProductDetails);
+app.post("/products", createProduct);
 
 //404 handler
 app.use((_req, res) => {
@@ -26,7 +30,7 @@ app.get("/health", (req, res) => {
   res.status(200).json({ status: "UP" });
 });
 const port = process.env.PORT || 4002;
-const serviceName = process.env.SERVICE_NAME || "Inventory-Service";
+const serviceName = process.env.SERVICE_NAME || "Products_Service";
 app.listen(port, () => {
   console.log(`${serviceName} is running on ${port}`);
 });
